@@ -21,7 +21,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/forgot-password" element={<ForgetPassword />} />
       </Route>
     )
   );
