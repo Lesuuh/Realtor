@@ -5,10 +5,12 @@ import {
   MdOutlineMenu,
 } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 
 export const Header = () => {
   const [menu, setMenu] = useState(false);
+  const [displayName, setDisplayName] = useState("Sign-In");
   const location = useLocation();
 
   // function to check the pathname and return true
@@ -21,6 +23,22 @@ export const Header = () => {
   const handleMenu = () => {
     setMenu(!menu);
   };
+
+  // firebase
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user !== null) {
+        setDisplayName(user.displayName);
+      }else{
+        setDisplayName("Sign-In")
+      }
+    };
+    fetchUser();
+  }, []);
+
   return (
     <>
       <div className={`z-10 glass-header border-b shadow-sm sticky top-0 `}>
@@ -72,8 +90,13 @@ export const Header = () => {
                   RoutePathName("/signin") && "font-bold text-red-500"
                 }`}
               >
-                <Link to="/signin" onClick={() => setMenu(false)}>
-                  Sign in
+                <Link
+                  to={displayName == "Sign-In" ? "/signin" : "/profile"}
+                  onClick={() => setMenu(false)}
+                >
+                  {displayName !== null
+                    ? displayName.split(" ")[0]
+                    : "Sign-In"}
                 </Link>
               </li>
             </ul>

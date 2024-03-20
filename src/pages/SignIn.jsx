@@ -1,25 +1,47 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { OAuth } from "../components/OAuth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
 
 export const SignIn = () => {
-  const [loginDetails, setLoginDetails] = useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  const { email, password } = formData;
+
   const [mode, setMode] = useState(false);
 
-  useDebounce(loginDetails, 3000);
+  const navigate = useNavigate();
 
-  console.log(loginDetails);
+  useDebounce(formData, 3000);
 
   const handleChange = (e) => {
-    setLoginDetails((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  // onSubmit function
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
   };
 
   // setting debounce
@@ -50,19 +72,19 @@ export const SignIn = () => {
           />
         </div>
         <div className="w-full">
-          <form action="">
+          <form action="" onSubmit={onSubmit}>
             <input
               type="email"
-              value={loginDetails.email}
+              value={formData.email}
               name="email"
               onChange={handleChange}
               placeholder="Email address"
               className="border border-blue-300 focus:outline-none focus:border-blue-500 w-full px-4 rounded-md text-sm py-2"
             />
-            <div className="pt-5 relative -z-10">
+            <div className="pt-5 relative">
               <input
                 type={mode ? "text" : "password"}
-                value={loginDetails.password}
+                value={formData.password}
                 name="password"
                 onChange={handleChange}
                 placeholder="Password"
@@ -78,7 +100,7 @@ export const SignIn = () => {
             <div className="">
               <div className="text-sm py-5 flex justify-between whitespace-nowrap">
                 <p>
-                  Don't have an account?{" "}
+                  Dont have an account?{" "}
                   <Link
                     to="/signup"
                     className="text-red-500 font-semibold ml-.5"
@@ -94,7 +116,10 @@ export const SignIn = () => {
               </div>
             </div>
 
-            <button className="bg-blue-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-blue-600 transition duration-150 ease-in-out active:bg-blue-800 hover:shadow-md">
+            <button
+              
+              className="bg-blue-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-blue-600 transition duration-150 ease-in-out active:bg-blue-800 hover:shadow-md"
+            >
               Sign-in
             </button>
           </form>
