@@ -4,6 +4,8 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
+
+// ROUTES
 import { Home } from "./pages/Home";
 import { Offers } from "./pages/Offers";
 import { Profile } from "./pages/Profile";
@@ -11,6 +13,10 @@ import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 import { ForgetPassword } from "./pages/ForgetPassword";
 import { Header } from "./components/Header";
+
+// TOASTIFY
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const router = createBrowserRouter(
@@ -29,6 +35,18 @@ function App() {
     <>
       <div>
         <RouterProvider router={router} />
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </div>
     </>
   );

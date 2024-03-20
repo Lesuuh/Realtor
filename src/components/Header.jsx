@@ -20,11 +20,10 @@ export const Header = () => {
 
   const handleMenu = () => {
     setMenu(!menu);
-    console.log(menu);
   };
   return (
     <>
-      <div className={`bg-white border-b shadow-sm sticky top-0 `}>
+      <div className={`z-10 glass-header border-b shadow-sm sticky top-0 `}>
         <div className="flex h-[60px]  items-center justify-between px-3 sm:px-16 max-w-6xl mx-auto ">
           <div onClick={() => handleMenu()} className={`sm:hidden pr-2`}>
             {menu ? (
