@@ -1,5 +1,5 @@
 import { getAuth, signOut } from "firebase/auth";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 

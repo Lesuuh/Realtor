@@ -42,6 +42,7 @@ export const OAuth = () => {
 
   return (
     <button
+    type="button"
       onClick={signUp}
       className="bg-red-500 flex items-center justify-center text-white font-medium w-full py-2  text-sm rounded-md hover:bg-red-600 transition duration-150 ease-in-out active:bg-red-800 hover:shadow-md"
     >

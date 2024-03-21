@@ -17,15 +17,17 @@ import { Header } from "./components/Header";
 // TOASTIFY
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 function App() {
+  const [userName, setUserName] = useState();
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Header />}>
+      <Route path="/" element={<Header />} userName={userName}>
         <Route path="/" element={<Home />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} setUserName={setUserName} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgetPassword />} />
       </Route>
@@ -36,7 +38,7 @@ function App() {
       <div>
         <RouterProvider router={router} />
         <ToastContainer
-          position="top-left"
+          position="bottom-center"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}

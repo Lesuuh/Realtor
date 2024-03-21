@@ -5,12 +5,12 @@ import {
   MdOutlineMenu,
 } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { getAuth } from "firebase/auth";
+import { useState } from "react";
+// import { getAuth } from "firebase/auth";
 
 export const Header = () => {
   const [menu, setMenu] = useState(false);
-  const [displayName, setDisplayName] = useState("Sign-In");
+
   const location = useLocation();
 
   // function to check the pathname and return true
@@ -24,20 +24,20 @@ export const Header = () => {
     setMenu(!menu);
   };
 
-  // firebase
+  // // firebase
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (user !== null) {
-        setDisplayName(user.displayName);
-      }else{
-        setDisplayName("Sign-In")
-      }
-    };
-    fetchUser();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const auth = getAuth();
+  //     const user = auth.currentUser;
+  //     if (user !== null) {
+  //       setDisplayName(user.displayName);
+  //     } else {
+  //       setDisplayName("Sign-In");
+  //     }
+  //   };
+  //   fetchUser();
+  // }, []);
 
   return (
     <>
@@ -86,17 +86,12 @@ export const Header = () => {
               </li>
 
               <li
-                className={`hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
+                className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
                   RoutePathName("/signin") && "font-bold text-red-500"
                 }`}
               >
-                <Link
-                  to={displayName == "Sign-In" ? "/signin" : "/profile"}
-                  onClick={() => setMenu(false)}
-                >
-                  {displayName !== null
-                    ? displayName.split(" ")[0]
-                    : "Sign-In"}
+                <Link to="/signin" onClick={() => setMenu(false)}>
+                  Sign-In{" "}
                 </Link>
               </li>
             </ul>

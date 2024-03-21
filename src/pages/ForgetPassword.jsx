@@ -1,5 +1,8 @@
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { OAuth } from "../components/OAuth";
 
 export const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -7,6 +10,17 @@ export const ForgetPassword = () => {
 
   const handleChange = (e) => {
     setEmail(e.target.value);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+    } catch (error) {
+      toast.error("Cannot send Reset Link");
+    }
   };
 
   return (
@@ -21,13 +35,14 @@ export const ForgetPassword = () => {
           />
         </div>
         <div className="w-full">
-          <form action="">
+          <form action="" onSubmit={onSubmit}>
             <input
               type="email"
               value={email}
               name="email"
               onChange={handleChange}
               placeholder="Email address"
+              required
               className="border border-blue-300 focus:outline-none focus:border-blue-500 w-full px-4 rounded-md text-sm py-2"
             />
             <div className="text-sm py-5 flex justify-between whitespace-nowrap">
@@ -43,15 +58,13 @@ export const ForgetPassword = () => {
               </p>
             </div>
             <button className="bg-blue-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-blue-600 transition duration-150 ease-in-out active:bg-blue-800 hover:shadow-md">
-              Sign-in
+              SEND RESET PASSWORD
             </button>
           </form>
           <div className="flex items-center py-4 before:border-t before:border-gray-300 before:flex-1 after:border-b after:border-gray-300 after:flex-1">
             <p className="text-center font-medium mx-4">OR</p>
           </div>
-          <button className="bg-red-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-red-600 transition duration-150 ease-in-out active:bg-red-800 hover:shadow-md">
-            Continue with Google
-          </button>
+          <OAuth />
         </div>
       </div>
     </section>

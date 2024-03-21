@@ -1,9 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { OAuth } from "../components/OAuth";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+
+// Define the useDebounce hook outside of the component
+function useDebounce(value, delay) {
+  const [debounce, setDebounce] = useState();
+
+  useEffect(() => {
+    const handleTimeOut = setTimeout(() => {
+      setDebounce(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handleTimeOut);
+    };
+  }, [value, delay]);
+
+  return debounce;
+}
 
 export const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +34,7 @@ export const SignIn = () => {
 
   const navigate = useNavigate();
 
+  // Usage of the useDebounce hook
   useDebounce(formData, 3000);
 
   const handleChange = (e) => {
@@ -43,22 +61,6 @@ export const SignIn = () => {
       toast.error("Bad user credentials");
     }
   };
-
-  // setting debounce
-  function useDebounce(value, delay) {
-    const [debounce, setDebounce] = useState();
-
-    useEffect(() => {
-      const handleTimeOut = setTimeout(() => {
-        setDebounce(value);
-      }, delay);
-
-      return () => {
-        clearTimeout(handleTimeOut);
-      };
-    }, [value, delay]);
-    return debounce;
-  }
 
   return (
     <section className="max-w-[1000px] mx-auto px-5 py-5">
@@ -116,10 +118,7 @@ export const SignIn = () => {
               </div>
             </div>
 
-            <button
-              
-              className="bg-blue-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-blue-600 transition duration-150 ease-in-out active:bg-blue-800 hover:shadow-md"
-            >
+            <button className="bg-blue-500 text-white font-medium w-full py-2  text-sm rounded-md hover:bg-blue-600 transition duration-150 ease-in-out active:bg-blue-800 hover:shadow-md">
               Sign-in
             </button>
           </form>
