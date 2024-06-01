@@ -48,6 +48,8 @@ export const SignUp = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // firebase Authetication
     try {
       const auth = getAuth();
       const userCredentials = await createUserWithEmailAndPassword(
