@@ -24,9 +24,11 @@ export const SignUp = () => {
     password: "",
   });
 
+
   // state for loading
   const [loading, setLoading] = useState(false);
 
+  // destructuring the form details
   const { name, email, password } = formData;
   const [mode, setMode] = useState(false);
   const navigate = useNavigate();
@@ -70,8 +72,8 @@ export const SignUp = () => {
 
       navigate("/");
     } catch (error) {
-      toast.error(error.message);
-      console.log(error)
+      toast.error("Email already exists");
+      console.log(error.message)
     }
     setLoading(false);
   };

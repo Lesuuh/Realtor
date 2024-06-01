@@ -41,6 +41,8 @@ export const Header = () => {
 
   return (
     <>
+
+    {/* header */}
       <div className={`z-10 glass-header border-b shadow-sm sticky top-0 `}>
         <div className="flex h-[60px]  items-center justify-between px-3 sm:px-16 max-w-6xl mx-auto ">
           <div onClick={() => handleMenu()} className={`sm:hidden pr-2`}>
@@ -94,6 +96,15 @@ export const Header = () => {
                   Sign-In{" "}
                 </Link>
               </li>
+              <li
+                className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
+                  RoutePathName("/profile") && "font-bold text-red-500"
+                }`}
+              >
+                <Link to="/profile" onClick={() => setMenu(false)}>
+                  Profile{" "}
+                </Link>
+              </li>
             </ul>
           </nav>
           {/* mobile screen */}
@@ -133,6 +144,7 @@ export const Header = () => {
         </div>
       </div>
 
+      {/* other routes */}
       <main>
         <Outlet />
       </main>

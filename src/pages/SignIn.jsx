@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
+// FIREBASE
 import { OAuth } from "../components/OAuth";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+// TOASTIFY
 import { toast } from "react-toastify";
 
 // Define the useDebounce hook outside of the component
@@ -23,15 +27,18 @@ function useDebounce(value, delay) {
 }
 
 export const SignIn = () => {
+  // state to store the user login details
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // destructure the formData
   const { email, password } = formData;
 
   const [mode, setMode] = useState(false);
 
+  // use to navigate from one location to another
   const navigate = useNavigate();
 
   // Usage of the useDebounce hook
@@ -58,7 +65,7 @@ export const SignIn = () => {
         navigate("/");
       }
     } catch (error) {
-      toast.error("Bad user credentials");
+      toast.error("Invalid email or password");
     }
   };
 
