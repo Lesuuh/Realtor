@@ -18,6 +18,7 @@ import { Header } from "./components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const [userName, setUserName] = useState();
@@ -26,7 +27,9 @@ function App() {
       <Route path="/" element={<Header />} userName={userName}>
         <Route path="/" element={<Home />} />
         <Route path="/offers" element={<Offers />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
         <Route path="/signin" element={<SignIn />} setUserName={setUserName} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgetPassword />} />
