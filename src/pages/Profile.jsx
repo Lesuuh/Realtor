@@ -3,9 +3,10 @@
 import { getAuth, updateProfile } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../firebase";
+import { FcHome } from "react-icons/fc";
 
 export const Profile = () => {
   const auth = getAuth();
@@ -26,7 +27,6 @@ export const Profile = () => {
     navigate("/");
   };
 
-
   // function to change the value of the text field
   function onChange(e) {
     setFormData((prevState) => ({
@@ -37,7 +37,7 @@ export const Profile = () => {
 
   // function to submit the edited form to firebase
   async function onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     try {
       // update the change in the auth
       await updateProfile(auth.currentUser, {
@@ -56,9 +56,9 @@ export const Profile = () => {
 
   return (
     <>
-      <section className="px-4">
+      <section className="">
         <h1 className="text-2xl text-center mt-6 font-bold">My Profile</h1>
-        <div className="mt-6 px-3 w-full md:flex md:justify-center md:align-center">
+        <div className="mt-6 px-3 md:max-w-[50%]  mx-auto flex-col md:flex md:justify-center md:align-center">
           <form>
             <input
               type="text"
@@ -99,8 +99,24 @@ export const Profile = () => {
                 Sign out
               </p>
             </div>
-            <button onClick={onSubmit} className={`bg-gray-900 text-white text-sm rounded px-5 py-1 ${!changeDetail ? "hidden" : "flex"}`}>Apply Changes</button>
+            <button
+              onClick={onSubmit}
+              className={`bg-gray-900 text-white text-sm rounded px-5 py-1 ${
+                !changeDetail ? "hidden" : "flex"
+              }`}
+            >
+              Apply Changes
+            </button>
           </form>
+          <Link to="/create-listing">
+            <button
+              type="submit"
+              className="w-full flex px-4 py-1 mt-10 justify-center items-center gap-3 rounded font-medium bg-blue-600 text-white outline-none uppercase hover:bg-blue-800 shadow-sm hover:shadow-lg transition ease-in-out duration-200 cursor-pointer"
+            >
+              <FcHome />
+              Sell or rent your home
+            </button>
+          </Link>
         </div>
       </section>
     </>
