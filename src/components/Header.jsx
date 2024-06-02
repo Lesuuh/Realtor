@@ -61,7 +61,7 @@ export const Header = () => {
           <nav className="flex items-center">
             <ul className={`hidden sm:flex gap-5`}>
               <li
-                className={`hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
+                className={`hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold cursor-pointer ${
                   RoutePathName("/") && "font-bold text-red-500"
                 }`}
               >
@@ -71,7 +71,7 @@ export const Header = () => {
               </li>
 
               <li
-                className={`hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
+                className={`hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold cursor-pointer ${
                   RoutePathName("/offers") && "font-bold text-red-500"
                 }`}
               >
@@ -81,9 +81,9 @@ export const Header = () => {
               </li>
 
               <li
-                className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
+                className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold cursor-pointer ${
                   (RoutePathName("/signin") || RoutePathName("/profile")) &&
-                  "font-bold text-red-500 cursor-pointer"
+                  "font-bold text-red-500 "
                 }`}
                 onClick={() => navigate("/profile")}
               >
@@ -91,6 +91,9 @@ export const Header = () => {
               </li>
             </ul>
           </nav>
+
+
+
           {/* mobile screen */}
           <nav className="">
             <ul
@@ -116,8 +119,8 @@ export const Header = () => {
                 </Link>
               </li>
               <li className="hover:underline hover:underline-offset-8 hover:text-red-500 cursor-pointer">
-                <Link to="/signin" onClick={() => setMenu(false)}>
-                  Sign in
+                <Link to="/profile" onClick={() => setMenu(false)}>
+                  {pageState}
                 </Link>
               </li>
             </ul>
