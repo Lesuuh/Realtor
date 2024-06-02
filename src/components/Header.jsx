@@ -1,48 +1,41 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   MdCloseFullscreen,
   MdOutlineAccountCircle,
   MdOutlineMenu,
 } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
-import { useState } from "react";
-// import { getAuth } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 export const Header = () => {
   const [menu, setMenu] = useState(false);
-
+  const [pageState, setPageState] = useState("Sign in");
   const location = useLocation();
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageState("Profile");
+      } else {
+        setPageState("Sign in");
+      }
+    });
+  }, [auth]);
 
   // function to check the pathname and return true
-  const RoutePathName = (routes) => {
-    if (routes === location.pathname) {
-      return true;
-    }
-  };
+  const RoutePathName = (routes) => (routes === location.pathname)
 
   const handleMenu = () => {
     setMenu(!menu);
   };
 
-  // // firebase
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const auth = getAuth();
-  //     const user = auth.currentUser;
-  //     if (user !== null) {
-  //       setDisplayName(user.displayName);
-  //     } else {
-  //       setDisplayName("Sign-In");
-  //     }
-  //   };
-  //   fetchUser();
-  // }, []);
-
   return (
     <>
-
-    {/* header */}
+      {/* header */}
       <div className={`z-10 glass-header border-b shadow-sm sticky top-0 `}>
         <div className="flex h-[60px]  items-center justify-between px-3 sm:px-16 max-w-6xl mx-auto ">
           <div onClick={() => handleMenu()} className={`sm:hidden pr-2`}>
@@ -89,21 +82,12 @@ export const Header = () => {
 
               <li
                 className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
-                  RoutePathName("/signin") && "font-bold text-red-500"
+                  (RoutePathName("/signin") || RoutePathName("/profile")) &&
+                  "font-bold text-red-500 cursor-pointer"
                 }`}
+                onClick={() => navigate("/profile")}
               >
-                <Link to="/signin" onClick={() => setMenu(false)}>
-                  Sign-In{" "}
-                </Link>
-              </li>
-              <li
-                className={` hover:underline hover:underline-offset-8 hover:text-red-500 text-sm font-semibold ${
-                  RoutePathName("/profile") && "font-bold text-red-500"
-                }`}
-              >
-                <Link to="/profile" onClick={() => setMenu(false)}>
-                  Profile{" "}
-                </Link>
+                {pageState}
               </li>
             </ul>
           </nav>
@@ -116,7 +100,7 @@ export const Header = () => {
                   : "-left-[100%] ease-in "
               } absolute top-[60px] duration-300 ease-in  bg-gray-900 text-white h-[100dvh] w-[70%] flex-col  `}
             >
-              <li className="hover:underline hover:underline-offset-8 hover:text-red-500">
+              <li className="hover:underline hover:underline-offset-8 hover:text-red-500 cursor-pointer">
                 <Link
                   to="/"
                   onClick={() => setMenu(false)}
@@ -126,12 +110,12 @@ export const Header = () => {
                 </Link>
               </li>
 
-              <li className="hover:underline hover:underline-offset-8 hover:text-red-500">
+              <li className="hover:underline hover:underline-offset-8 hover:text-red-500 cursor-pointer">
                 <Link to="/offers" onClick={() => setMenu(false)}>
                   Offers
                 </Link>
               </li>
-              <li className="hover:underline hover:underline-offset-8 hover:text-red-500">
+              <li className="hover:underline hover:underline-offset-8 hover:text-red-500 cursor-pointer">
                 <Link to="/signin" onClick={() => setMenu(false)}>
                   Sign in
                 </Link>

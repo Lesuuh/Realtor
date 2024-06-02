@@ -26,10 +26,6 @@ export const Profile = () => {
     navigate("/");
   };
 
-  // edit the profile name
-  // const edit = () => {
-  //   setChangeDetail((prevState) => !prevState);
-  // };
 
   // function to change the value of the text field
   function onChange(e) {
@@ -50,15 +46,14 @@ export const Profile = () => {
 
       // update in the firestore
       const docRef = doc(db, "users", auth.currentUser.uid);
-      const check = await updateDoc(docRef, { name });
-      console.log(check)
+      await updateDoc(docRef, { name });
+
       toast.success("Updated Successfully");
     } catch (error) {
       toast.error("Could not update details");
     }
   }
 
-  // console.log(formData);
   return (
     <>
       <section className="px-4">
