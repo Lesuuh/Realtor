@@ -22,6 +22,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreateListing from "./pages/CreateListing";
 
 function App() {
+
   const [userName, setUserName] = useState();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,10 +32,13 @@ function App() {
         <Route path="/profile" element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route path="/create-listing" element={<CreateListing/>}/>
+        <Route path="/create-listing" element={<PrivateRoute />}>
+          <Route path="/create-listing" element={<CreateListing />} />
+        </Route>
         <Route path="/signin" element={<SignIn />} setUserName={setUserName} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgetPassword />} />
+        {/* <Route path="/create-listing" element={<CreateListing />} /> */}
       </Route>
     )
   );
