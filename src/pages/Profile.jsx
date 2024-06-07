@@ -1,22 +1,32 @@
 // import { toast } from "react-toastify";
 
 import { getAuth, updateProfile } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import {
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../firebase";
 import { FcHome } from "react-icons/fc";
+import ListingItem from "../components/ListingItem";
 
 export const Profile = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-  // STATES
   const [changeDetail, setChangeDetail] = useState(false);
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
   });
+  const [listings, setListings] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // destructuring the details from the formData
   const { name, email } = formData;
@@ -53,6 +63,28 @@ export const Profile = () => {
       toast.error("Could not update details");
     }
   }
+
+  useEffect(() => {
+    async function fetchUserListings() {
+      const listingRef = collection(db, "listings");
+      const q = query(
+        listingRef,
+        where("userRef", "==", auth.currentUser.uid),
+        orderBy("timestamp", "desc")
+      );
+      const qSnap = await getDocs(q);
+      let listings = [];
+      qSnap.forEach((doc) => {
+        return listingRef.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      setListings(listings);
+      setLoading(false);
+    }
+    fetchUserListings();
+  }, [auth.currentUser.uid]);
 
   return (
     <>
@@ -119,6 +151,20 @@ export const Profile = () => {
           </Link>
         </div>
       </section>
+      {!loading && listings.length > 0 && (
+        <>
+          <h1 className="text-2xl text-center font-semibold">My Listings</h1>
+          <ul>
+            {listings.map((listing) => {
+              <ListingItem
+                key={listing.id}
+                id={listing.id}
+                listing={listing.data}
+              />;
+            })}
+          </ul>
+        </>
+      )}
     </>
   );
 };

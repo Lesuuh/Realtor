@@ -140,6 +140,7 @@ function CreateListing() {
       ...formData,
       imgURLs,
       timestamp: serverTimestamp(),
+      userRef: auth.currentUser.uid,
     };
 
     !formDataCopy.offer && delete formDataCopy.discounted;
